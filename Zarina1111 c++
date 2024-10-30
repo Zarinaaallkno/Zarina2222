@@ -1,0 +1,29 @@
+# c++
+#include <iostream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+string atbash_cipher(string text) {
+  string alphabet = "abcdefghijklmnopqrstuvwxyz";
+  string result = "";
+
+  for (char char : text) {
+    char lowerChar = tolower(char);
+    if (alphabet.find(lowerChar) != string::npos) {
+      int index = alphabet.find(lowerChar);
+      result += alphabet[25 - index];
+    } else {
+      result += char;
+    }
+  }
+  return result;
+}
+
+int main() {
+  string text = "Hello world!";
+  string encrypted_text = atbash_cipher(text);
+  cout << "Зашифрованный текст: " << encrypted_text << endl; // Вывод: Svool dliow!
+  return 0;
+}
