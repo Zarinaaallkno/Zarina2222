@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <random>
+#include <vector>
+
+using namespace std;
+
+string atbash_cipher(string text) {
+  string alphabet = "abcdefghijklmnopqrstuvwxyz";
+  string result = "";
+
+  for (char char : text) {
+    char lowerChar = tolower(char);
+    if (alphabet.find(lowerChar) != string::npos) {
+      int index = alphabet.find(lowerChar);
+      result += alphabet[25 - index];
+    } else {
+      result += char;
+    }
+  }
+  return result;
+}
+
+string enigma_cipher(string text, const vector<int>& rotors) {
+  string alphabet = "abcdefghijklmnopqrstuvwxyz";
+  string result = "";
+
+  for (char char : text) {
+    char lowerChar = tolower(char);
+    if (alphabet.find(lowerChar) != string::npos) {
+      int index = alphabet.find(lowerChar);
+      for (int rotor : rotors) {
+        index = (index + rotor) % alphabet.size();
+      }
+      result += alphabet[index];
+    } else {
+      result += char;
+    }
+  }
+  return result;
+}
+
+string combined_cipher(string text) {
+  random_device rd;
+  mt19937 gen(rd());
+  uniform_int_distribution<> distrib(0, 25);
+  vector<int> rotors(3);
+  for (int i = 0; i < 3; ++i) {
+    rotors[i] = distrib(gen);
+  }
+
+  string encrypted_text = atbash_cipher(text);
+  encrypted_text = enigma_cipher(encrypted_text, rotors);
+
+  // Добавить логику для бинарного поиска по зашифрованному тексту
+  // ...
+
+  return encrypted_text;
+}
+
+int main() {
+  string text = "Hello world!";
+  string encrypted_text = combined_cipher(text);
+  cout << "Зашифрованный текст: " << encrypted_text << endl; // Вывод: Например, 'Qjcmf ykvhf!'
+  return 0;
+}
