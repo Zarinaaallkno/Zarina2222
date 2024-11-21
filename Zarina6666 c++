@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+
+std::string decimalToBinaryViaOctal(int decimalNumber) {
+    // Переводим из десятичной в восьмеричную
+    std::stringstream octalStream;
+    octalStream << std::oct << decimalNumber;
+    std::string octalNumber = octalStream.str();
+
+    std::cout << "Восьмеричное представление: " << octalNumber << std::endl;
+
+    // Переводим из восьмеричной в двоичную
+    int octalValue = std::stoi(octalNumber, nullptr, 8);
+    std::stringstream binaryStream;
+    binaryStream << std::bitset<32>(octalValue); // Используем 32 бита для представления
+    std::string binaryNumber = binaryStream.str();
+
+    // Убираем ведущие нули
+    size_t pos = binaryNumber.find('1');
+    if (pos != std::string::npos) {
+        return binaryNumber.substr(pos);
+    }
+    return "0"; // Если число равно 0
+}
+
+int main() {
+    int decimalNumber = 100;
+    std::string binaryResult = decimalToBinaryViaOctal(decimalNumber);
+    std::cout << "Двоичное представление: " << binaryResult << std::endl;
+    return 0;
+}
